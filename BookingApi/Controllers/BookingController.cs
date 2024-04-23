@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-//using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos;
 
 namespace BookingAPI.Controllers
 {
