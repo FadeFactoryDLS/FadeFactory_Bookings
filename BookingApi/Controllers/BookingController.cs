@@ -28,6 +28,20 @@ namespace BookingAPI.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> CreateItem(Booking item)
+{
+         try
+        {
+   //         await _cosmosDbService.AddItemAsync(item);
+        return Ok();
+        }
+        catch (Exception ex)
+        {
+        return StatusCode(StatusCodes.Status500InternalServerError, $"Error inserting item: {ex.Message}");
+        }
+}
+
         // POST: api/bookings
         [HttpPost]
 
