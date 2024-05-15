@@ -1,20 +1,30 @@
 using System.Threading.Tasks;
 using Microsoft.Azure.Cosmos;
-using BookingAPIModels; // Assuming your Booking model is in this namespace
+using BookingAPI.Models;
+
+namespace BookingAPI.Services;
 
 public class BookingService
 {
     private Container _container;
 
-    public BookingService(CosmosClient dbClient, string databaseName, string containerName)
+    public BookingService(CosmosClient dbClient, string? DatabaseID, string? ContainerID)  //DatabaseID, ContainerID
     {
-        _container = dbClient.GetContainer(databaseName, containerName);
+ 
+        if (DatabaseID == null)
+    {
+        throw new ArgumentNullException(nameof(DatabaseID));
+    }
+
+        if (ContainerID == null)
+    {
+        throw new ArgumentNullException(nameof(ContainerID));
+    }
+       _container = dbClient.GetContainer(DatabaseID, ContainerID);
     }
 
     public async Task AddItemAsync(Booking item)
     {
-        await _container.CreateItemAsync<Booking>(item, new PartitionKey(item.Uuid));
+        await _container.CreateItemAsync<Booking>(item, new PartitionKey(item.id));
     }
-
-    // Add other methods for interacting with the database here
 }

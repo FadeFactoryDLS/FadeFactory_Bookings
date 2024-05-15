@@ -1,32 +1,30 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
-namespace BookingAPIModels
+namespace BookingAPI.Models;
+
+public class Booking
 {
-        public class Booking
-        {
-            [Key]
-            public int Uuid {get; set;}
+    [Key]
+    [JsonProperty(PropertyName = "id")]
+    public string id { get; set; }
 
-            public string Email {get; set;}
+    public string Email { get; set; }
 
-            public DateTime Datetime {get; set;}
+    public DateTime Datetime { get; set; }
 
-            public bool Isbooked {get; set;}
+    public bool Isbooked { get; set; }
 
-            public Booking()
-            {
 
-            }
-
-        public Booking(int uuid, string email, DateTime dateTime, bool isbooked)
-        {
-            Uuid = uuid;
-            Email = email;
-            Datetime = dateTime;
-            Isbooked = isbooked;
-        }
-
+    public Booking(string id, string email, DateTime dateTime, bool isbooked)
+    {
+        this.id = id;
+        Email = email;
+        Datetime = dateTime;
+        Isbooked = isbooked;
     }
+
 }
+
 
