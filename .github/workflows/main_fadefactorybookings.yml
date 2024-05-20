@@ -23,7 +23,9 @@ jobs:
           include-prerelease: true
 
       - name: Import environment variables
+        shell: bash
         run: |
+          touch .env
           echo ${{ secrets.DOTENV_BASE64_ENCODED }} | base64 --decode >> .env
 
       - name: Build with dotnet
