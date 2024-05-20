@@ -5,6 +5,7 @@
 # .NET Core build folders
 bin/
 obj/
+.txt
 .env
 
 # Common node modules locations

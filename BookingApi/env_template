@@ -1,0 +1,16 @@
+# Database Configuration
+CONNECTION_STRING=CONNECTION_STRING
+DATABASE_ID=DATABASE_NAME
+CONTAINER_ID=CONTAINER_NAME
+
+# API Configuration
+API_KEY=API_KEY
+API_SECRET=API_SECRET
+API_URL=API_URL
+
+# Other Configuration
+DEBUG_MODE=true
+LOG_LEVEL=info
+
+# run this command to get a base64 encoded string of the .env file for github secret
+# $ openssl base64 -A -in .env -out .txt
