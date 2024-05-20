@@ -6,7 +6,7 @@ using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Env.Load();
+Env.TraversePath().Load();
 
 string ConnectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? string.Empty;
 string DatabaseId = Environment.GetEnvironmentVariable("DATABASE_ID") ?? string.Empty;
