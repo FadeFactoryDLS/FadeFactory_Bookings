@@ -26,7 +26,7 @@ jobs:
         shell: bash
         run: |
           touch .env
-          echo ${{ secrets.DOTENV_BASE64_ENCODED }} | base64 --decode >> .env
+          echo ${{ secrets.DOTENV_BASE64_ENCODED }} | base64 --decode >> D:\a\FadeFactory_Bookings\FadeFactory_Bookings\BookingApi\.env
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
