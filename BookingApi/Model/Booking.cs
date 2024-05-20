@@ -12,19 +12,15 @@ public class Booking
 
     public string Email { get; set; }
 
-    public DateTime Datetime { get; set; }
-
-    public bool Isbooked { get; set; }
+    public DateTime Timeslot { get; set; }
 
 
-    public Booking(string id, string email, DateTime dateTime, bool isbooked)
+    public Booking(string id, string email, DateTime timeslot)
     {
         this.id = id;
         Email = email;
-        Datetime = dateTime;
-        Isbooked = isbooked;
+        Timeslot = timeslot;
     }
-
 }
 
 
