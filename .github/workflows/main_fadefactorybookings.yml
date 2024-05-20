@@ -16,11 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Import environment variables
-        shell: bash
-        run: |
-          touch .env
-          echo ${{ secrets.DOTENV_BASE64_ENCODED }} | base64 --decode >> D:\a\FadeFactory_Bookings\FadeFactory_Bookings\BookingApi\.env
+      # - name: Import environment variables
+      #   shell: bash
+      #   run: |
+      #     touch .env
+      #     echo ${{ secrets.DOTENV_BASE64_ENCODED }} | base64 --decode >> D:\a\FadeFactory_Bookings\FadeFactory_Bookings\BookingApi\.env
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
