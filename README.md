@@ -11,7 +11,7 @@ The project is a REST API with swagger documentation
 # Secrets
 Secrets are stored in Github secrets
 
-#Local development
+# Local development
 Set up a local .env file with Connectionstring, Databasename and Containername from a database where you wish to store data.
 Change directory to the root of the project -> cd .\BookingApi\ 
 Type "Dotnet run" in your terminal
