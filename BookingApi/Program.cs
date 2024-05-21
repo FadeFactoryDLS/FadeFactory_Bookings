@@ -17,7 +17,6 @@ if (string.IsNullOrEmpty(ConnectionString) || string.IsNullOrEmpty(DatabaseId) |
     throw new Exception("Missing Cosmos DB configuration");
 }
 
-//builder.Services.AddSingleton(x => new CosmosClient(ConnectionString));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

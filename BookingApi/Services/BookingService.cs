@@ -52,7 +52,4 @@ public class BookingService
     {
         await _container.DeleteItemAsync<Booking>(item.id, new PartitionKey(item.id));
     }
-
-
-
 }
