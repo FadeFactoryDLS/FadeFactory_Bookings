@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
@@ -6,20 +5,19 @@ namespace BookingAPI.Models;
 
 public class Booking
 {
-    [Key]
-    [JsonProperty(PropertyName = "id")]
-    public string id { get; set; }
+    [Key, Required]
+    [JsonProperty("bookingId")]
+    public int BookingId { get; set; }
 
+    [StringLength(255), Required]
     public string Email { get; set; }
 
+    [Required]
     public DateTime Timeslot { get; set; }
 
-
-    public Booking(string id, string email, DateTime timeslot)
+    public override string ToString()
     {
-        this.id = id;
-        Email = email;
-        Timeslot = timeslot;
+        return $"id: {BookingId}, Email: {Email}, Timeslot: {Timeslot}";
     }
 }
 

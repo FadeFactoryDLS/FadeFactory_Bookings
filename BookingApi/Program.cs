@@ -1,36 +1,31 @@
-using Microsoft.OpenApi.Models;
-using Microsoft.Azure.Cosmos;
 using BookingAPI.Services;
-using System.Configuration;
 using DotNetEnv;
+using Microsoft.EntityFrameworkCore;
+using BookingAPI.Models;
+using BookingAPI.Managers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 Env.TraversePath().Load();
 
-string ConnectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? string.Empty;
-string DatabaseId = Environment.GetEnvironmentVariable("DATABASE_ID") ?? string.Empty;
-string ContainerId = Environment.GetEnvironmentVariable("CONTAINER_ID") ?? string.Empty;
-
-if (string.IsNullOrEmpty(ConnectionString) || string.IsNullOrEmpty(DatabaseId) || string.IsNullOrEmpty(ContainerId))
-{
-    throw new Exception("Missing Cosmos DB configuration");
-}
+string cosmosConnectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? throw new ArgumentNullException();
+string cosmosDatabaseName = Environment.GetEnvironmentVariable("DATABASE_ID") ?? throw new ArgumentNullException();
+builder.Services.AddDbContext<BookingDbContext>(options => options.UseCosmos(cosmosConnectionString, cosmosDatabaseName));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton(x => new CosmosClient(ConnectionString));
+builder.Services.AddScoped<IBookingService, BookingDbManager>();
 
-
-builder.Services.AddScoped<BookingService>(sp =>
-    new BookingService(
-        sp.GetRequiredService<CosmosClient>(),
-        DatabaseId,
-        ContainerId
-    )
-);
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder => builder
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
 
 var app = builder.Build();
 
@@ -43,6 +38,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 

@@ -1,11 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using Microsoft.Azure.Cosmos;
 using BookingAPI.Models;
 using BookingAPI.Services;
-using DotNetEnv;
 
 namespace BookingAPI.Controllers;
 
@@ -13,69 +8,72 @@ namespace BookingAPI.Controllers;
 [ApiController]
 public class BookingsController : ControllerBase
 {
-    private readonly BookingService _bookingService;
-    private readonly CosmosClient _cosmosClient;
-
-    public BookingsController(BookingService bookingService, CosmosClient cosmosClient)
+    private readonly IBookingService _service;
+    public BookingsController(IBookingService service)
     {
-        _cosmosClient = cosmosClient;
-        _bookingService = bookingService;
+        _service = service;
     }
-    [HttpGet(Name = "GetAll")]
+
+    [HttpGet("GetAll")]
     public async Task<ActionResult<IEnumerable<Booking>>> Get()
     {
-        var bookings = await _bookingService.GetAllItemsAsync();
+        var bookings = await _service.GetAllBookings();
         return Ok(bookings);
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult> Get(string id)
+    [HttpGet("{bookingId}")]
+    public async Task<ActionResult> Get(int bookingId)
     {
-
-        var booking = await _bookingService.GetItemAsync(id);
-        if (booking == null)
+        try
         {
-            return NotFound();
+            var booking = await _service.GetBooking(bookingId);
+            return Ok(booking);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
         }
 
-        return Ok(booking);
+
     }
 
     [HttpPost]
-    public async Task<ActionResult<Booking>> Post([FromBody] Booking booking)
+    public async Task<ActionResult<Booking>> Post(Booking booking)
     {
-        await _bookingService.AddItemAsync(booking);
+        Booking createdBooking = await _service.AddBooking(booking);
 
-        return CreatedAtAction(nameof(Get), new { id = booking.id }, booking);
+        String host = HttpContext.Request.Host.Value;
+        String uri = $"https://{host}/api/Accounts/{createdBooking.BookingId}";
+
+        return Created(uri, createdBooking);
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Put(string id, [FromBody] Booking updatedBooking)
+    [HttpPut()]
+    public async Task<IActionResult> Put(Booking booking)
     {
-        var booking = await _bookingService.GetItemAsync(id);
-        if (booking == null)
+        try
         {
-            return NotFound();
+            Booking updateBooking = await _service.UpdateBooking(booking);
+            return Ok(updateBooking);
         }
-
-        updatedBooking.id = id; // Ensure the id of the updated booking is the same as the id in the route
-        await _bookingService.UpdateItemAsync(updatedBooking);
-
-        return NoContent();
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(string id)
-    {
-        var booking = await _bookingService.GetItemAsync(id);
-        if (booking == null)
+        catch (Exception e)
         {
-            return NotFound();
+            return BadRequest(e.Message);
         }
-
-        await _bookingService.DeleteItemAsync(booking);
-        return NoContent();
     }
 
 
+    [HttpDelete("{bookingId}")]
+    public async Task<IActionResult> Delete(int bookingId)
+    {
+        try
+        {
+            await _service.DeleteBooking(bookingId);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
 }
