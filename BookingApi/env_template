@@ -11,5 +11,8 @@ API_URL=API_URL
 DEBUG_MODE=true
 LOG_LEVEL=info
 
+#JWT
+TOKEN=JWT_TOKEN
+
 # run this command to get a base64 encoded string of the .env file for github secret
 # $ openssl base64 -A -in .env -out .txt

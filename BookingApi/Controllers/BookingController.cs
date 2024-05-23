@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using BookingAPI.Models;
 using BookingAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookingAPI.Controllers;
 
@@ -37,7 +38,7 @@ public class BookingsController : ControllerBase
 
     }
 
-    [HttpPost]
+    [HttpPost, Authorize]
     public async Task<ActionResult<Booking>> Post(Booking booking)
     {
         Booking createdBooking = await _service.AddBooking(booking);
@@ -48,7 +49,7 @@ public class BookingsController : ControllerBase
         return Created(uri, createdBooking);
     }
 
-    [HttpPut()]
+    [HttpPut(), Authorize]
     public async Task<IActionResult> Put(Booking booking)
     {
         try
@@ -63,7 +64,7 @@ public class BookingsController : ControllerBase
     }
 
 
-    [HttpDelete("{bookingId}")]
+    [HttpDelete("{bookingId}"), Authorize]
     public async Task<IActionResult> Delete(int bookingId)
     {
         try
